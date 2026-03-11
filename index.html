@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geometry Dash Glow Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #000;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+        #gameContainer {
+            text-align: center;
+        }
+        canvas {
+            border: 4px solid #00ffff;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0,255,255,0.5);
+        }
+        #ui {
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 10px;
+            font-size: 24px;
+            display: flex;
+            justify-content: space-around;
+            border: 2px solid #000;
+        }
+        #gameOver {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.95);
+            color: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 4px solid #ff0000;
+        }
+        #gameOver h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #ff0000;
+        }
+        #gameOver button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #gameOver button:hover {
+            background: #00cc00;
+        }
+        #instructions {
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            font-size: 16px;
+            border: 2px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <canvas id="gameCanvas" width="1000" height="500"></canvas>
+        <div id="ui">
+            <div>Distance: <span id="distance">0</span>m</div>
+            <div>Attempts: <span id="attempts">1</span></div>
+        </div>
+        <div id="instructions">
+            Press SPACE or Click to Jump | Hold SPACE to Fly in Ship Mode | Avoid Spikes and Gaps!
+        </div>
+        <div id="gameOver">
+            <h1>Game Over!</h1>
+            <p>Distance: <span id="finalDistance">0</span>m</p>
+            <button onclick="location.reload()">Try Again</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
