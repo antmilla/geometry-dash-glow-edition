@@ -635,6 +635,19 @@ function draw() {
             // Draw inner detail
             ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
             ctx.fillRect(-player.width / 2 + 8, -player.height / 2 + 8, player.width - 16, player.height - 16);
+
+            // Draw face
+            // Eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(-player.width / 2 + 10, -player.height / 2 + 10, 6, 6); // Left eye
+            ctx.fillRect(-player.width / 2 + 24, -player.height / 2 + 10, 6, 6); // Right eye
+
+            // Mouth (smile)
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, -player.height / 2 + 18, 8, 0.2, Math.PI - 0.2);
+            ctx.stroke();
         }
 
         ctx.shadowBlur = 0;
