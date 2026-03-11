@@ -54,7 +54,9 @@ const game = {
         onGround: false,
         color: '#00ffff',
         rotation: 0,
-        mode: 'cube' // 'cube' or 'ship'
+        mode: 'cube', // 'cube' or 'ship'
+        shipTimer: 0,
+        shipWarning: false
     },
     obstacles: [],
     ground: {
@@ -248,6 +250,21 @@ function update() {
 
     // Physics based on mode
     if (player.mode === 'ship') {
+        // Increment ship timer
+        player.shipTimer++;
+
+        // Check if 50 seconds have passed (50 seconds * 60 fps = 3000 frames)
+        if (player.shipTimer >= 2400) { // 40 seconds warning
+            player.shipWarning = true;
+        }
+
+        if (player.shipTimer >= 3000) { // 50 seconds - switch back to cube
+            player.mode = 'cube';
+            player.shipTimer = 0;
+            player.shipWarning = false;
+            playSound('hit');
+        }
+
         // Ship mode - hold to fly up, release to fall
         if (game.keys[' '] || game.keys['click']) {
             player.velocityY -= 1.2; // Fly up
@@ -342,7 +359,11 @@ function update() {
                 width: obstacle.width,
                 height: obstacle.height
             })) {
-                player.mode = 'ship';
+                if (player.mode !== 'ship') {
+                    player.mode = 'ship';
+                    player.shipTimer = 0;
+                    player.shipWarning = false;
+                }
             }
         } else if (obstacle.type === 'cube_portal') {
             // Switch to cube mode
@@ -353,6 +374,8 @@ function update() {
                 height: obstacle.height
             })) {
                 player.mode = 'cube';
+                player.shipTimer = 0;
+                player.shipWarning = false;
             }
         } else if (obstacle.type === 'spike') {
             if (checkCollision(player, {
@@ -722,6 +745,24 @@ function draw() {
         ctx.textAlign = 'left';
     }
 
+    // Draw ship mode warning
+    if (game.player.shipWarning && game.player.mode === 'ship') {
+        const blink = Math.floor(Date.now() / 300) % 2;
+        if (blink) {
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.3)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.textAlign = 'center';
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = '#ff0000';
+            ctx.fillStyle = '#ff0000';
+            ctx.font = 'bold 40px Arial';
+            ctx.fillText('SHIP MODE ENDING SOON!', canvas.width / 2, 50);
+            ctx.shadowBlur = 0;
+            ctx.textAlign = 'left';
+        }
+    }
+
     // Draw level complete screen
     if (game.levelComplete) {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
@@ -806,6 +847,8 @@ function restart() {
     game.player.onGround = false;
     game.player.rotation = 0;
     game.player.mode = 'cube';
+    game.player.shipTimer = 0;
+    game.player.shipWarning = false;
     generateObstacles();
     document.getElementById('gameOver').style.display = 'none';
 }
