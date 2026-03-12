@@ -183,9 +183,9 @@ function generateObstacles() {
         }
     }
 
-    // Add finish line at the end
+    // Add finish line at the end (overlapping with obstacles)
     game.finishLine = {
-        x: lastX + 500,
+        x: lastX - 500,
         y: 0,
         width: 60,
         height: game.ground.y
@@ -642,11 +642,12 @@ function draw() {
             ctx.fillRect(-player.width / 2 + 10, -player.height / 2 + 10, 6, 6); // Left eye
             ctx.fillRect(-player.width / 2 + 24, -player.height / 2 + 10, 6, 6); // Right eye
 
-            // Mouth (smile)
+            // Mouth (straight line)
             ctx.strokeStyle = '#000';
             ctx.lineWidth = 2;
             ctx.beginPath();
-            ctx.arc(0, -player.height / 2 + 18, 8, 0.2, Math.PI - 0.2);
+            ctx.moveTo(-player.width / 2 + 12, -player.height / 2 + 28);
+            ctx.lineTo(-player.width / 2 + 28, -player.height / 2 + 28);
             ctx.stroke();
         }
 
